@@ -19,8 +19,8 @@ export default function RootLayout({ children }) {
   */
   return (
     <html lang="en">
-      <body className={inter.className}>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <body>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-black">
           <Link href="/">
             <p class="navbar-brand">Sudoku Web</p>
           </Link>
