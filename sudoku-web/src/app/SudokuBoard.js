@@ -13,12 +13,36 @@ export default function SudokuBoard() {
 
     */
 
+    function updateSelection(id) {
+        console.log("Updating id to: ", id)
+        SetSelectedId(id)
+    }
+
     function setStartingPosition(values) {
         let boardData = []
         values.forEach(value => {
             boardData.push({"val":value,"isSelected":false,"isValid":true})
         })
         setData(boardData)
+    }
+
+    // Function sets the value of a tile in the game
+    // Takes a value to update the selected tile to
+    function setValue(value) {
+        console.log("setting value: ", value)
+        // Validate the value (10 > x > 0)
+        if (value > 0 && value < 10) {
+        // Check if a tile is selected and valid (82 > x > 0)
+        if (SelectedId > 0 && SelectedId < 82) {
+        // Get the board state
+        let board = data
+        // Update the value
+        board[SelectedId].val = value
+        // Validate and update isValid
+        // Set the board state
+        setData([...board])
+        }
+        }
     }
 
     // Data for the board state
@@ -92,14 +116,15 @@ export default function SudokuBoard() {
         //console.log(props)
         //<th scope="row">A</th>
         //"d-flex align-items-center justify-content-center"
+        // OnItemClick(x + props.indexStart)
         return (
             <tr>
                 {props.items.map((data, x) => (
                     <td className="align-items-center justify-content-center border" style={data.isSelected ? {backgroundColor: 'purple'} : 
                     data.isMarked && data.isValid ? {backgroundColor: 'blue'} : data.isMarked && !data.isValid ? {backgroundColor: 'red'} : {}} 
-                    id={x + props.indexStart} key={x} onClick={() => OnItemClick(x + props.indexStart)}>
-                        <div style={{aspectRatio:1/1}} className={data.isValid ? "d-flex align-items-center justify-content-center" : "text-danger d-flex align-items-center justify-content-center"}>
-                            {data.val > 0 && data.val}</div>
+                    id={x + props.indexStart} key={x} onClick={() => updateSelection(x+props.indexStart)}>
+                        <div style={data.val > 0 ? {aspectRatio:1/1}: {visibility:'hidden', aspectRatio:1/1}} className={data.isValid ? "d-flex align-items-center justify-content-center" : "text-danger d-flex align-items-center justify-content-center"}>
+                            {data.val}</div>
                     </td>
                 ))}
             </tr>
@@ -139,6 +164,18 @@ export default function SudokuBoard() {
             ])}> 
             Set up board 
             </button>
+
+            <ul>
+                <button type="button" className="btn btn-primary" onClick={() => setValue(1)}><li>1</li></button>
+                <button type="button" className="btn btn-primary" onClick={() => setValue(2)}><li>2</li></button>
+                <button type="button" className="btn btn-primary" onClick={() => setValue(3)}><li>3</li></button>
+                <button type="button" className="btn btn-primary" onClick={() => setValue(4)}><li>4</li></button>
+                <button type="button" className="btn btn-primary" onClick={() => setValue(5)}><li>5</li></button>
+                <button type="button" className="btn btn-primary" onClick={() => setValue(6)}><li>6</li></button>
+                <button type="button" className="btn btn-primary" onClick={() => setValue(7)}><li>7</li></button>
+                <button type="button" className="btn btn-primary" onClick={() => setValue(8)}><li>8</li></button>
+                <button type="button" className="btn btn-primary" onClick={() => setValue(9)}><li>9</li></button>
+            </ul>
         </div>
         </>
     )
