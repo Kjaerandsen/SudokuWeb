@@ -15,7 +15,16 @@ export default function SudokuBoard() {
 
     function updateSelection(id) {
         console.log("Updating id to: ", id)
+        // Get the previous selection
+        let prev = SelectedId
+        // Remove the selection from the board
+        let board = data
+        board[prev].isSelected = false
+        // Update the new selection
+        board[id].isSelected = true
+        // Set the values
         SetSelectedId(id)
+        setData([...board])
     }
 
     function setStartingPosition(values) {
@@ -49,6 +58,7 @@ export default function SudokuBoard() {
     // Takes a board, each value validates against the solution
     function validateBoard(board) {
         let solution = solvedBoard
+        let correct = 0
         // Go through each value
         for (let i = 0; i < 81; i++) {
             // If the value is equal to the solution value
@@ -56,10 +66,15 @@ export default function SudokuBoard() {
             if (board[i].val == solution[i]) {
                 // Set the tile to valid
                 board[i].isValid = true
+                correct++
             } else {
                 // Else set the tile to invalid
                 board[i].isValid = false
             }
+        }
+
+        if (correct == 81){
+            window.alert("Congratulations, you solved the puzzle!")
         }
 
         return board
@@ -162,7 +177,7 @@ export default function SudokuBoard() {
     return (
         <>
         <div className="col-12 col-md-6 border-end border-start border-secondary">
-            <h1>test</h1>
+            <h1>Sudoku</h1>
             <table className="table table-bordered bg-primary" style={{border:'2px solid black'}}>
                 <tbody>
                     <SudokuRow items={data.slice(0, 9)} indexStart = {0} />
@@ -178,7 +193,6 @@ export default function SudokuBoard() {
             </table>
         </div>
         <div className="col-12 col-md-6 border-end border-start border-secondary">
-            Buttons here
             <button type="button" className="btn btn-primary" onClick={() => setStartingPosition([
                 0,0,0,0,0,3,9,6,8,
                 0,0,4,6,2,0,5,1,0,
