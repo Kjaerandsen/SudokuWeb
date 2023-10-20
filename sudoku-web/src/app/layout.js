@@ -20,10 +20,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom border-black">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom border-black justify-content-between">
         <Link href="/">
           <p className="navbar-brand">Sudoku Web</p>
         </Link>
+        <Link href="/about"><p className="navbar-nav">About</p></Link>
       </nav>
       {children}
       </body>
