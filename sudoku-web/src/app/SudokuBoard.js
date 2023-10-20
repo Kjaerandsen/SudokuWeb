@@ -32,17 +32,33 @@ export default function SudokuBoard() {
         console.log("setting value: ", value)
         // Validate the value (10 > x > 0)
         if (value > 0 && value < 10) {
-        // Check if a tile is selected and valid (82 > x > 0)
-        if (SelectedId > 0 && SelectedId < 82) {
+        // Check if a tile is selected and valid (81 > x >= 0)
+        if (SelectedId >= 0 && SelectedId < 81) {
         // Get the board state
         let board = data
         // Update the value
         board[SelectedId].val = value
         // Validate and update isValid
+        board = validateBoard(board)
         // Set the board state
         setData([...board])
         }
         }
+    }
+
+    // Takes a board, each value validates against the solution
+    function validateBoard(board) {
+        let solution = solvedBoard
+        // Go through each value
+        for (let i = 0; i < 81; i++) {
+            if (board[i].val == solution[i]) {
+                board[i].isValid = true
+            } else {
+                board[i].isValid = false
+            }
+        }
+
+        return board
     }
 
     // Data for the board state
