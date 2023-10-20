@@ -10,9 +10,9 @@ export default function SudokuBoard() {
             text-color: "red"
         }
         or
-
     */
 
+    // Takes an id, updates the selection and marks the selected tile
     function updateSelection(id) {
         console.log("Updating id to: ", id)
         // Get the previous selection
@@ -27,6 +27,7 @@ export default function SudokuBoard() {
         setData([...board])
     }
 
+    // Sets up a new board with values from a values integer array
     function setStartingPosition(values) {
         let boardData = []
         values.forEach(value => {
@@ -101,18 +102,6 @@ export default function SudokuBoard() {
         {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
         {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
     ])
-    /*
-    const [data, setData] = useState([
-        {"val":0,"isSelected":true,"isValid":true}, {"val":1,"isMarked":true,"isValid":false}, {"val":1,"isMarked":true,"isValid":true}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1},
-        {"val":9}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1},
-        {"val":9}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1},
-        {"val":9}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1},
-        {"val":9}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1},
-        {"val":9}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1},
-        {"val":9}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1},
-        {"val":9}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1},
-        {"val":9}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}, {"val":1}])
-    */
 
     // Data for the solved board state
     const [solvedBoard, setSolvedBoard] = useState([
@@ -135,13 +124,8 @@ export default function SudokuBoard() {
         and in the case of invalid marking (red?)
         The invalid tile should have another text color or border to show which value is incorrectly marked
     */
-
-        /*
-            {"val":0,"isFilled":true,isSelected:true,"isValid":false,isMarked:"true"}
-
-        */
     
-    
+    /*
     function OnItemClick(i){
         //alert(i)
         console.log(i)
@@ -154,12 +138,10 @@ export default function SudokuBoard() {
         SetSelectedId(i)
         //console.log("New id: ", SelectedId)
     }
+    */
 
+    // Displays a single row of the sudoku board
     function SudokuRow(props) {
-        //console.log(props)
-        //<th scope="row">A</th>
-        //"d-flex align-items-center justify-content-center"
-        // OnItemClick(x + props.indexStart)
         return (
             <tr>
                 {props.items.map((data, x) => (
@@ -241,13 +223,4 @@ export default function SudokuBoard() {
             //<div key={x}>{data}</div>
             sudokuRow(data=x)
         ))}
-*/
-
-
-/*
-function sudokuTile(props){
-    return (
-        <div>Tile Here</div>
-    )
-}
 */
