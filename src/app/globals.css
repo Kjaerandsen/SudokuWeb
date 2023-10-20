@@ -1,0 +1,11 @@
+td:nth-of-type(3n) {
+  border-right: 2px solid black !important;
+}
+
+tr:nth-of-type(3n) {
+  border-bottom: 2px solid black !important;
+}
+
+.selected{
+  background: #cdcefa !important;
+}
