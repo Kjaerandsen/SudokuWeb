@@ -48,6 +48,7 @@ export default function SudokuBoard() {
         let board = data
         // Update the value
         board[SelectedId].val = value
+        board[SelectedId].isMarked = true
         // Validate and update isValid
         board = validateBoard(board)
         // Set the board state
@@ -63,7 +64,7 @@ export default function SudokuBoard() {
         // Go through each value
         for (let i = 0; i < 81; i++) {
             // If the value is equal to the solution value
-            console.log(board[i].val, solution[i])
+            //console.log(board[i].val, solution[i])
             if (board[i].val == solution[i]) {
                 // Set the tile to valid
                 board[i].isValid = true
@@ -74,6 +75,8 @@ export default function SudokuBoard() {
             }
         }
 
+        console.log(board)
+
         if (correct == 81){
             window.alert("Congratulations, you solved the puzzle!")
         }
@@ -83,24 +86,24 @@ export default function SudokuBoard() {
 
     // Data for the board state
     const [data, setData] = useState([
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
-        {"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},{"val":0,"isValid":true},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
     ])
 
     // Data for the solved board state
@@ -140,15 +143,18 @@ export default function SudokuBoard() {
     }
     */
 
+    // <div style={data.val > 0 ? {aspectRatio:1/1}: {visibility:'hidden', aspectRatio:1/1}}
+    // {data.isSelected ? {backgroundColor: 'purple'} : 
+    // data.isMarked && data.isValid ? {backgroundColor: 'blue'} : data.isMarked && !data.isValid ? {backgroundColor: 'red'} : {}} 
     // Displays a single row of the sudoku board
     function SudokuRow(props) {
         return (
             <tr>
                 {props.items.map((data, x) => (
-                    <td className="align-items-center justify-content-center border" style={data.isSelected ? {backgroundColor: 'purple'} : 
-                    data.isMarked && data.isValid ? {backgroundColor: 'blue'} : data.isMarked && !data.isValid ? {backgroundColor: 'red'} : {}} 
+                    <td className="align-items-center justify-content-center w-7 h-7 border border-gray-600" style={!data.isValid && data.isMarked && data.isSelected ? {backgroundColor: 'rgb(112,53,49)'} : data.isSelected ? {backgroundColor: 'purple'} : 
+                    {}} 
                     id={x + props.indexStart} key={x} onClick={() => updateSelection(x+props.indexStart)}>
-                        <div style={data.val > 0 ? {aspectRatio:1/1}: {visibility:'hidden', aspectRatio:1/1}} className={data.isValid ? "d-flex align-items-center justify-content-center" : "text-danger d-flex align-items-center justify-content-center"}>
+                        <div style={data.val > 0 ? {}: {visibility:'hidden'}} className={data.isValid ? "align-items-center justify-content-center" : "text-red-800 align-items-center justify-content-center"}>
                             {data.val}</div>
                     </td>
                 ))}
@@ -158,9 +164,9 @@ export default function SudokuBoard() {
 
     return (
         <>
-        <div className="col-12 col-md-6 border-end border-start border-secondary">
+        <div className="col-span-2 md:col-span-1 md:border-r-2 md:border-fuchsia-900">
             <h1>Sudoku</h1>
-            <table className="table table-bordered bg-primary" style={{border:'2px solid black'}}>
+            <table className="table-fixed border-2 border-black m-auto">
                 <tbody>
                     <SudokuRow items={data.slice(0, 9)} indexStart = {0} />
                     <SudokuRow items={data.slice(9, 18)} indexStart = {9} />
@@ -174,8 +180,8 @@ export default function SudokuBoard() {
                 </tbody>
             </table>
         </div>
-        <div className="col-12 col-md-6 border-end border-start border-secondary">
-            <button type="button" className="btn btn-primary" onClick={() => setStartingPosition([
+        <div className="col-span-2 md:col-span-1 border-end border-start border-secondary">
+            <button type="button" className="bg-sky-950 text-gray-300 pl-2 pr-2 m-2 rounded-md w-56" onClick={() => setStartingPosition([
                 0,0,0,0,0,3,9,6,8,
                 0,0,4,6,2,0,5,1,0,
                 0,8,7,0,5,0,0,0,2,
@@ -189,17 +195,19 @@ export default function SudokuBoard() {
             Set up board 
             </button>
 
-            <ul>
-                <button type="button" className="btn btn-primary" onClick={() => setValue(1)}><li>1</li></button>
-                <button type="button" className="btn btn-primary" onClick={() => setValue(2)}><li>2</li></button>
-                <button type="button" className="btn btn-primary" onClick={() => setValue(3)}><li>3</li></button>
-                <button type="button" className="btn btn-primary" onClick={() => setValue(4)}><li>4</li></button>
-                <button type="button" className="btn btn-primary" onClick={() => setValue(5)}><li>5</li></button>
-                <button type="button" className="btn btn-primary" onClick={() => setValue(6)}><li>6</li></button>
-                <button type="button" className="btn btn-primary" onClick={() => setValue(7)}><li>7</li></button>
-                <button type="button" className="btn btn-primary" onClick={() => setValue(8)}><li>8</li></button>
-                <button type="button" className="btn btn-primary" onClick={() => setValue(9)}><li>9</li></button>
-            </ul>
+            <div className="m-auto">
+                <div className='grid grid-cols-3 m-auto bg-sky-950 rounded-md w-36'>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-r border-b border-gray-300" onClick={() => setValue(1)}>1</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-x border-b border-gray-300" onClick={() => setValue(2)}>2</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-l border-b border-gray-300" onClick={() => setValue(3)}>3</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-y border-r border-gray-300" onClick={() => setValue(4)}>4</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border border-gray-300" onClick={() => setValue(5)}>5</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-y border-l border-gray-300" onClick={() => setValue(6)}>6</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-r border-t border-gray-300" onClick={() => setValue(7)}>7</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-t border-x border-gray-300" onClick={() => setValue(8)}>8</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-l border-t border-gray-300" onClick={() => setValue(9)}>9</button>
+                </div>
+            </div>
         </div>
         </>
     )

@@ -2,10 +2,8 @@ import SudokuBoard from './SudokuBoard.js'
 
 export default function Home() {
   return (
-    <main className="container-xl main-container bg-white text-center">
-      <div className="row col-12 m-0">
+    <main className="container text-center bg-gray-200 m-auto grid grid-cols-2">
         <SudokuBoard/>
-      </div>
     </main>
   )
 }
