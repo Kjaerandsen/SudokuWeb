@@ -1,16 +1,41 @@
 'use client'
 import { useState } from 'react';
+import { useEffect } from 'react';
+import { useRef} from 'react';
+import { useSearchParams } from 'next/navigation';
 
 export default function SudokuBoard() {
     const [SelectedId, SetSelectedId] = useState(0);
-    
-    /*
-        const styles = {
-            backgroundColor: "purple",
-            text-color: "red"
+    const initialLoad = useRef(true);
+    const searchParams = useSearchParams()
+    const [PuzzleId, SetPuzzleId] = useState(1) 
+
+    useEffect(() => {
+      if (initialLoad.current) {
+        
+        let val = searchParams.get('puzzle')
+        // Set the board state
+        if(puzzles[val]) {
+            //console.log(puzzles[val])
+            console.log("Puzzle found, setting state.")
+            //console.log(tempData)
+            // Set the board state and solved board state variables
+            setStartingPosition(puzzles[val]["board"],0)
+            setSolvedBoard(puzzles[val]["solved"])
+            SetPuzzleId(val)
+        } else {
+            // If the puzzle is not found, default to the first puzzle
+            val = 1
+            console.log("Puzzle found, setting state.")
+            //console.log(tempData)
+            // Set the board state and solved board state variables
+            setStartingPosition(puzzles[val]["board"],0)
+            setSolvedBoard(puzzles[val]["solved"])
         }
-        or
-    */
+        // Set up the board
+        initialLoad.current = false;
+      }
+    }, []);
 
     // Takes an id, updates the selection and marks the selected tile
     function updateSelection(id) {
@@ -28,12 +53,21 @@ export default function SudokuBoard() {
     }
 
     // Sets up a new board with values from a values integer array
-    function setStartingPosition(values) {
-        let boardData = []
-        values.forEach(value => {
+    function setStartingPosition(values, id) {
+        if (id == 0) {
+            let boardData = []
+            values.forEach(value => {
+                boardData.push({"val":value,"isSelected":false,"isValid":true})
+            })
+            setData(boardData)
+        } else {
+            values = puzzles[id]["board"]
+            let boardData = []
+            values.forEach(value => {
             boardData.push({"val":value,"isSelected":false,"isValid":true})
-        })
-        setData(boardData)
+            })
+            setData(boardData)
+        }
     }
 
     // Function sets the value of a tile in the game
@@ -84,6 +118,33 @@ export default function SudokuBoard() {
         return board
     }
 
+    
+
+    /*
+        id, is automatic, not important
+        value is important
+        isSelected is important
+        Need to be able to mark all interacting tiles, both in the case of them as impacting (blue?)
+        and in the case of invalid marking (red?)
+        The invalid tile should have another text color or border to show which value is incorrectly marked
+    */
+
+    // Displays a single row of the sudoku board
+    function SudokuRow(props) {
+        return (
+            <tr>
+                {props.items.map((data, x) => (
+                    <td className="align-items-center justify-content-center w-7 h-7 border border-gray-400" style={!data.isValid && data.isMarked && data.isSelected ? {backgroundColor: 'rgb(112,53,49)'} : data.isSelected ? {backgroundColor: 'purple'} : 
+                    {}} 
+                    id={x + props.indexStart} key={x} onClick={() => updateSelection(x+props.indexStart)}>
+                        <div style={data.val > 0 ? {}: {visibility:'hidden'}} className={data.isValid ? "align-items-center justify-content-center text-bold text-gray-300" : "text-red-800 text-bold align-items-center justify-content-center"}>
+                            {data.val}</div>
+                    </td>
+                ))}
+            </tr>
+        )
+    }
+
     // Data for the board state
     const [data, setData] = useState([
         {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
@@ -104,10 +165,32 @@ export default function SudokuBoard() {
         {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
         {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
         {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-    ])
+    ]) 
 
     // Data for the solved board state
     const [solvedBoard, setSolvedBoard] = useState([
+        0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0
+    ])
+
+    const puzzles = {"1":{"board":[
+        0,0,0,0,0,3,9,6,8,
+        0,0,4,6,2,0,5,1,0,
+        0,8,7,0,5,0,0,0,2,
+        0,0,0,2,7,0,0,0,9,
+        7,1,0,0,0,0,0,2,4,
+        9,0,0,0,1,5,0,0,0,
+        5,0,0,0,8,0,4,3,0,
+        0,2,3,0,6,9,7,0,0,
+        1,6,8,4,0,0,0,0,0
+    ], "solved":[
         2,5,1,7,4,3,9,6,8,
         3,9,4,6,2,8,5,1,7,
         6,8,7,9,5,1,3,4,2,
@@ -117,49 +200,49 @@ export default function SudokuBoard() {
         5,7,9,1,8,2,4,3,6,
         4,2,3,5,6,9,7,8,1,
         1,6,8,4,3,7,2,9,5
-    ])
-
-    /*
-        id, is automatic, not important
-        value is important
-        isSelected is important
-        Need to be able to mark all interacting tiles, both in the case of them as impacting (blue?)
-        and in the case of invalid marking (red?)
-        The invalid tile should have another text color or border to show which value is incorrectly marked
-    */
-    
-    /*
-    function OnItemClick(i){
-        //alert(i)
-        console.log(i)
-        document.getElementById(SelectedId).classList.remove("selected")
-        console.log("removed ", SelectedId )
-        console.log(document.getElementById(SelectedId))
-        document.getElementById(i).classList.add("selected")
-        console.log(document.getElementById(i))
-        console.log("Should have been selected now")
-        SetSelectedId(i)
-        //console.log("New id: ", SelectedId)
-    }
-    */
-
-    // <div style={data.val > 0 ? {aspectRatio:1/1}: {visibility:'hidden', aspectRatio:1/1}}
-    // {data.isSelected ? {backgroundColor: 'purple'} : 
-    // data.isMarked && data.isValid ? {backgroundColor: 'blue'} : data.isMarked && !data.isValid ? {backgroundColor: 'red'} : {}} 
-    // Displays a single row of the sudoku board
-    function SudokuRow(props) {
-        return (
-            <tr>
-                {props.items.map((data, x) => (
-                    <td className="align-items-center justify-content-center w-7 h-7 border border-gray-400" style={!data.isValid && data.isMarked && data.isSelected ? {backgroundColor: 'rgb(112,53,49)'} : data.isSelected ? {backgroundColor: 'purple'} : 
-                    {}} 
-                    id={x + props.indexStart} key={x} onClick={() => updateSelection(x+props.indexStart)}>
-                        <div style={data.val > 0 ? {}: {visibility:'hidden'}} className={data.isValid ? "align-items-center justify-content-center text-bold text-gray-300" : "text-red-800 text-bold align-items-center justify-content-center"}>
-                            {data.val}</div>
-                    </td>
-                ))}
-            </tr>
-        )
+    ]},
+    1:{"board":[
+        0,0,0,0,0,3,9,6,8,
+        0,0,4,6,2,0,5,1,0,
+        0,8,7,0,5,0,0,0,2,
+        0,0,0,2,7,0,0,0,9,
+        7,1,0,0,0,0,0,2,4,
+        9,0,0,0,1,5,0,0,0,
+        5,0,0,0,8,0,4,3,0,
+        0,2,3,0,6,9,7,0,0,
+        1,6,8,4,0,0,0,0,0
+    ], "solved":[
+        2,5,1,7,4,3,9,6,8,
+        3,9,4,6,2,8,5,1,7,
+        6,8,7,9,5,1,3,4,2,
+        8,3,6,2,7,4,1,5,9,
+        7,1,5,3,9,6,8,2,4,
+        9,4,2,8,1,5,6,7,3,
+        5,7,9,1,8,2,4,3,6,
+        4,2,3,5,6,9,7,8,1,
+        1,6,8,4,3,7,2,9,5
+    ]},
+    2:{"board":[
+        0,0,0,0,0,3,9,6,8,
+        0,0,4,6,2,0,5,1,0,
+        0,8,7,0,5,0,0,0,2,
+        0,0,0,2,7,0,0,0,9,
+        7,1,0,0,0,0,0,2,4,
+        9,0,0,0,1,5,0,0,0,
+        5,0,0,0,8,0,4,3,0,
+        0,2,3,0,6,9,7,0,0,
+        1,6,8,4,0,0,0,0,0
+    ], "solved":[
+        2,5,1,7,4,3,9,6,8,
+        3,9,4,6,2,8,5,1,7,
+        6,8,7,9,5,1,3,4,2,
+        8,3,6,2,7,4,1,5,9,
+        7,1,5,3,9,6,8,2,4,
+        9,4,2,8,1,5,6,7,3,
+        5,7,9,1,8,2,4,3,6,
+        4,2,3,5,6,9,7,8,1,
+        1,6,8,4,3,7,2,9,5
+    ]}
     }
 
     return (
@@ -181,18 +264,8 @@ export default function SudokuBoard() {
             </table>
         </div>
         <div className="col-span-2 md:col-span-1 border-end border-start border-gray-400">
-            <button type="button" className="bg-sky-950 text-gray-300 pl-2 pr-2 m-2 rounded-md w-56" onClick={() => setStartingPosition([
-                0,0,0,0,0,3,9,6,8,
-                0,0,4,6,2,0,5,1,0,
-                0,8,7,0,5,0,0,0,2,
-                0,0,0,2,7,0,0,0,9,
-                7,1,0,0,0,0,0,2,4,
-                9,0,0,0,1,5,0,0,0,
-                5,0,0,0,8,0,4,3,0,
-                0,2,3,0,6,9,7,0,0,
-                1,6,8,4,0,0,0,0,0
-            ])}> 
-            Set up board 
+            <button type="button" className="bg-sky-950 text-gray-300 pl-2 pr-2 m-2 rounded-md w-56" onClick={() => setStartingPosition([],PuzzleId)}> 
+            Reset the board 
             </button>
 
             <div className="m-auto">
@@ -210,25 +283,7 @@ export default function SudokuBoard() {
             </div>
         </div>
         </>
+
     )
+    
 }
-
-
-
-/*
-{sudokuRow(data.slice(9, 18))}
-                {sudokuRow(data.slice(18, 27))}
-                {sudokuRow(data.slice(27, 36))}
-                {sudokuRow(data.slice(36, 45))}
-                {sudokuRow(data.slice(45, 54))}
-                {sudokuRow(data.slice(54, 63))}
-                {sudokuRow(data.slice(63, 72))}
-                {sudokuRow(data.slice(72, 81))}
-*/
-
-/*
-{data.map((data, x) => (
-            //<div key={x}>{data}</div>
-            sudokuRow(data=x)
-        ))}
-*/
