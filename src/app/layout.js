@@ -12,25 +12,6 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
-  /*
-  useEffect(()=>
-    require('bootstrap/dist/js/bootstrap.bundle.min.js')
-  )
-  */
-
-  /*
-    <html lang="en">
-      <body>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom border-black justify-content-between">
-        <Link href="/">
-          <p className="navbar-brand">Sudoku Web</p>
-        </Link>
-        <Link href="/about"><p className="navbar-nav">About</p></Link>
-      </nav>
-      {children}
-      </body>
-    </html>
-  */
   return (
     <html lang="en">
       <body className='bg-gray-950'>
