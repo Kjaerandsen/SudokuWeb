@@ -151,10 +151,10 @@ export default function SudokuBoard() {
         return (
             <tr>
                 {props.items.map((data, x) => (
-                    <td className="align-items-center justify-content-center w-7 h-7 border border-gray-600" style={!data.isValid && data.isMarked && data.isSelected ? {backgroundColor: 'rgb(112,53,49)'} : data.isSelected ? {backgroundColor: 'purple'} : 
+                    <td className="align-items-center justify-content-center w-7 h-7 border border-gray-400" style={!data.isValid && data.isMarked && data.isSelected ? {backgroundColor: 'rgb(112,53,49)'} : data.isSelected ? {backgroundColor: 'purple'} : 
                     {}} 
                     id={x + props.indexStart} key={x} onClick={() => updateSelection(x+props.indexStart)}>
-                        <div style={data.val > 0 ? {}: {visibility:'hidden'}} className={data.isValid ? "align-items-center justify-content-center" : "text-red-800 align-items-center justify-content-center"}>
+                        <div style={data.val > 0 ? {}: {visibility:'hidden'}} className={data.isValid ? "align-items-center justify-content-center text-bold text-gray-300" : "text-red-800 text-bold align-items-center justify-content-center"}>
                             {data.val}</div>
                     </td>
                 ))}
@@ -166,7 +166,7 @@ export default function SudokuBoard() {
         <>
         <div className="col-span-2 md:col-span-1 md:border-r-2 md:border-fuchsia-900">
             <h1>Sudoku</h1>
-            <table className="table-fixed border-2 border-black m-auto">
+            <table className="table-fixed border-2 m-auto mb-1" style={{borderColor: 'rgb(112, 48, 97)'}}>
                 <tbody>
                     <SudokuRow items={data.slice(0, 9)} indexStart = {0} />
                     <SudokuRow items={data.slice(9, 18)} indexStart = {9} />
@@ -180,7 +180,7 @@ export default function SudokuBoard() {
                 </tbody>
             </table>
         </div>
-        <div className="col-span-2 md:col-span-1 border-end border-start border-secondary">
+        <div className="col-span-2 md:col-span-1 border-end border-start border-gray-400">
             <button type="button" className="bg-sky-950 text-gray-300 pl-2 pr-2 m-2 rounded-md w-56" onClick={() => setStartingPosition([
                 0,0,0,0,0,3,9,6,8,
                 0,0,4,6,2,0,5,1,0,
