@@ -75,7 +75,7 @@ export default function SudokuBoard() {
     function setValue(value) {
         console.log("setting value: ", value)
         // Validate the value (10 > x > 0)
-        if (value > 0 && value < 10) {
+        if (value >= 0 && value < 10) {
         // Check if a tile is selected and valid (81 > x >= 0)
         if (SelectedId >= 0 && SelectedId < 81) {
         // Get the board state
@@ -142,6 +142,23 @@ export default function SudokuBoard() {
                     </td>
                 ))}
             </tr>
+        )
+    }
+
+    // Example way of showing markings for each tile
+    function Marking(props) {
+        return (
+        <div className='grid grid-cols-3' style={{fontSize: "0.3rem"}}>
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+            <div>9</div>  
+        </div>
         )
     }
 
@@ -281,6 +298,10 @@ export default function SudokuBoard() {
                     <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-l border-t border-gray-300" onClick={() => setValue(9)}>9</button>
                 </div>
             </div>
+
+            <button type="button" className="bg-sky-950 text-gray-300 pl-2 pr-2 m-2 rounded-md w-56" onClick={() => setValue(0)}> 
+            Clear tile
+            </button>
         </div>
         </>
 
