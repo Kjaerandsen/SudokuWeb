@@ -33,7 +33,7 @@ export default function Home() {
 
             <br/>
           <p>
-            One of the main strenghts of Sudoku is that it is based on logic. Meaning that a proper Sudoku puzzle can be solved
+            One of the main strengths of Sudoku is that it is based on logic. Meaning that a proper Sudoku puzzle can be solved
             without any guesswork. To do this there are different techniques with various degrees of complexity.
             The most basic technique is to look at the numbers already filled in and look at which numbers are filled in several 
             times. Then you can look for other places where that number can be placed.
@@ -51,7 +51,11 @@ export default function Home() {
           
             <br/>
           <p>
-            {/* Marking? */}
+            Finally, to help in the process of eliminating alternatives and remembering which alternatives exist for each tile there
+            is a marking mode. This allows you to mark the tiles with possible values. For example if a grid has three free slots then
+            you know that the three slots have two options of their contents. These three tiles can then be marked with these two options.
+            This makes the alternatives for the tiles clear, and through the process of elimination the alternatives for each tile will
+            reduce until there is only one option left. At that point the tile can be filled with the value.
           </p>
         </div>
     </main>
