@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 export default function SudokuBoard() {
     const [SelectedId, SetSelectedId] = useState(0);
     const initialLoad = useRef(true);
+    const [MarkMode, ToggleMarkMode] = useState(false);
     const searchParams = useSearchParams()
     const [PuzzleId, SetPuzzleId] = useState(1) 
 
@@ -73,22 +74,68 @@ export default function SudokuBoard() {
     // Function sets the value of a tile in the game
     // Takes a value to update the selected tile to
     function setValue(value) {
-        console.log("setting value: ", value)
-        // Validate the value (10 > x > 0)
-        if (value >= 0 && value < 10) {
-        // Check if a tile is selected and valid (81 > x >= 0)
-        if (SelectedId >= 0 && SelectedId < 81) {
         // Get the board state
         let board = data
-        // Update the value
-        board[SelectedId].val = value
-        board[SelectedId].isMarked = true
-        // Validate and update isValid
-        board = validateBoard(board)
+
+        // Validate the value (10 > x > 0)
+        if (value >= 1 && value < 10) {
+        console.log("setting value: ", value)
+        // Check if a tile is selected and valid (81 > x >= 0)
+        if (SelectedId >= 0 && SelectedId < 81) {
+        // Add value if markmode is false
+        if (!MarkMode) {
+            // Update the value
+            board[SelectedId].val = value
+            board[SelectedId].isMarked = true
+            delete board[SelectedId].markings
+            // Validate and update isValid
+            board = validateBoard(board)
+
+        // Set marking if markmode is true
+        } else {
+            console.log("Marking")
+            // Do not add a marking if the tile is already occupied
+            if (board[SelectedId].val == 0) {
+                // Marks variable
+                var Marks = []
+                // If markings for the tile exists get them
+                if (("markings" in board[SelectedId])) {
+                    //console.log(board[SelectedId])
+                    Marks = board[SelectedId].markings
+                    // Get the marking values if there are any
+                    console.log("Found markings: ", Marks)
+                    // Check if the value already exists
+                    let loc = Marks.indexOf(value)
+                    if (loc >= 0){
+                        // Remove the value if it is present
+                        console.log("Deleting: ", value)
+                        Marks.splice(loc, 1)
+                    } else {
+                        Marks.push(value) // Add the value if not
+                        console.log("Adding marks to existing", Marks, value)
+                    }
+                } else { // If no markings exist, add the value
+                    Marks.push(value)
+                    console.log("Adding marks", Marks, value)
+                }
+                console.log("Marks are now:", Marks)
+                //Marks = Marks.sort((a, b) => a - b)
+                board[SelectedId].markings=Marks
+            }
+        }}
+
+        // Remove the markings and value if the input is 0
+        } else {
+            // Set the value to true if removing the value to remove the red background marking
+            if (value == 0){
+                board[SelectedId].val = value
+                board[SelectedId].isValid = true
+                delete board[SelectedId].markings
+            }
+        }
+
         // Set the board state
         setData([...board])
-        }
-        }
     }
 
     // Takes a board, each value validates against the solution
@@ -137,8 +184,7 @@ export default function SudokuBoard() {
                     <td className="align-items-center justify-content-center w-7 h-7 border border-gray-400" style={!data.isValid && data.isMarked && data.isSelected ? {backgroundColor: 'rgb(112,53,49)'} : data.isSelected ? {backgroundColor: 'purple'} : 
                     {}} 
                     id={x + props.indexStart} key={x} onClick={() => updateSelection(x+props.indexStart)}>
-                        <div style={data.val > 0 ? {}: {visibility:'hidden'}} className={data.isValid ? "align-items-center justify-content-center text-bold text-gray-300" : "text-red-800 text-bold align-items-center justify-content-center"}>
-                            {data.val}</div>
+                        {data.val == 0 ? <Marking marks = {data.markings}/> : <Tile data={data}/>}
                     </td>
                 ))}
             </tr>
@@ -147,18 +193,30 @@ export default function SudokuBoard() {
 
     // Example way of showing markings for each tile
     function Marking(props) {
+        //console.log(props.marks)
+        if (props.marks !== undefined && props.marks.length > 0) {
         return (
         <div className='grid grid-cols-3' style={{fontSize: "0.3rem"}}>
-            <div>1</div>
-            <div>2</div>
-            <div>3</div>
-            <div>4</div>
-            <div>5</div>
-            <div>6</div>
-            <div>7</div>
-            <div>8</div>
-            <div>9</div>  
+            {(props.marks.includes(1)) ? <div>1</div> : <div style={{visibility:'hidden'}}>0</div>}
+            {(props.marks.includes(2)) ? <div>2</div> : <div style={{visibility:'hidden'}}>0</div>}
+            {(props.marks.includes(3)) ? <div>3</div> : <div style={{visibility:'hidden'}}>0</div>}
+            {(props.marks.includes(4)) ? <div>4</div> : <div style={{visibility:'hidden'}}>0</div>}
+            {(props.marks.includes(5)) ? <div>5</div> : <div style={{visibility:'hidden'}}>0</div>}
+            {(props.marks.includes(6)) ? <div>6</div> : <div style={{visibility:'hidden'}}>0</div>}
+            {(props.marks.includes(7)) ? <div>7</div> : <div style={{visibility:'hidden'}}>0</div>}
+            {(props.marks.includes(8)) ? <div>8</div> : <div style={{visibility:'hidden'}}>0</div>}
+            {(props.marks.includes(9)) ? <div>9</div> : <div style={{visibility:'hidden'}}>0</div>}
         </div>
+        )
+        }
+    }
+
+    // Show a tile without markings
+    function Tile(props) {
+        return (
+            <div className={props.data.isValid ? "align-items-center justify-content-center text-bold text-gray-300" : "text-red-800 text-bold align-items-center justify-content-center"}>
+                {props.data.val}
+            </div>
         )
     }
 
@@ -302,6 +360,14 @@ export default function SudokuBoard() {
             <button type="button" className="bg-sky-950 text-gray-300 pl-2 pr-2 m-2 rounded-md w-56" onClick={() => setValue(0)}> 
             Clear tile
             </button>
+
+            <br/>
+
+            <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" checked={MarkMode} className="cursor-pointer" onChange={() => ToggleMarkMode(!MarkMode)}/>
+                <span className="ml-3 text-gray-300">Mark mode</span>
+            </label>
+
         </div>
         </>
 
