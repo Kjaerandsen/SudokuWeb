@@ -208,6 +208,8 @@ export default function SudokuBoard() {
             {(props.marks.includes(9)) ? <div>9</div> : <div style={{visibility:'hidden'}}>0</div>}
         </div>
         )
+        } else {
+            return(<></>)
         }
     }
 
