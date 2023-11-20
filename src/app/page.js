@@ -35,7 +35,8 @@ export default function Home() {
             <br/>
           <p>
             This means that if there are any repeated numbers in either the vertical or horizontal direction, or in one of the
-            sub-grids then an error has been made.
+            sub-grids then an error has been made. In the example below the number 5 is repeated in all possible orientations.
+            Which means that an error has been made. The input of an incorrect number is represented with a red color on the number.
           </p><br/>
             {/* Illustrations here */}
             <Image src={example2} className='m-auto border-black border-2'
@@ -72,11 +73,17 @@ export default function Home() {
             Finally, to help in the process of eliminating alternatives and remembering which alternatives exist for each tile there
             is a marking mode. This allows you to mark the tiles with possible values. For example if a grid has three free slots then
             you know that the three slots have two options of their contents. These three tiles can then be marked with these two options.
-            This makes the alternatives for the tiles clear, and through the process of elimination the alternatives for each tile will
-            reduce until there is only one option left. At that point the tile can be filled with the value.
+            This makes the alternatives for the tiles clear, and through the process of elimination throughout the puzzle, the alternatives 
+            for each tile will reduce until there is only one option left. At that point the tile can be filled with the value.
           </p><br/>
           <Image src={example5} className='m-auto border-black border-2'
             alt="Image of a sub-grid with markings."/>
+            <br/>
+            <br/>
+          <p>
+            In the example above if either a five or a six is located above or below the left tile then you know the value of both tiles. The same
+            is true for the right tile.
+          </p>
         </div>
     </main>
   )
