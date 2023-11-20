@@ -11,6 +11,55 @@ export default function SudokuBoard() {
     const searchParams = useSearchParams()
     const [PuzzleId, SetPuzzleId] = useState(1) 
 
+    // Based on https://devtrium.com/posts/how-keyboard-shortcut visited 20.11.2023
+    // Handle keybindings
+    const handleKeyboardInput = (event) => {
+        switch (event.key) {
+            case "1":
+                setValue(1)
+            break
+            case "2":
+                setValue(2)
+            break
+            case "3":
+                setValue(3)
+            break
+            case "4":
+                setValue(4)
+            break
+            case "5":
+                setValue(5)
+            break
+            case "6":
+                setValue(6)
+            break
+            case "7":
+                setValue(7)
+            break
+            case "8":
+                setValue(8)
+            break
+            case "9":
+                setValue(9)
+            break
+            case "0":
+                setValue(0)
+            break
+            case "Backspace":
+                setValue(0)
+            break
+            case "Delete":
+                setValue(0)
+            break
+            case "-":
+                ToggleMarkMode(!MarkMode)
+            break
+            case "+":
+                ToggleMarkMode(!MarkMode)
+            break
+        }
+    }
+
     useEffect(() => {
       if (initialLoad.current) {
         
@@ -36,7 +85,21 @@ export default function SudokuBoard() {
         // Set up the board
         initialLoad.current = false;
       }
-    }, []);
+
+    
+      // Based on https://devtrium.com/posts/how-keyboard-shortcut visited 20.11.2023
+      // Listen for keyboard input, call the function above when an input is detected
+      document.addEventListener('keydown', handleKeyboardInput)
+
+      // Remove the event listener when it is no longer needed
+      return () => {
+        document.removeEventListener('keydown', handleKeyboardInput);
+      }
+    }, [handleKeyboardInput]);
+
+    
+    
+    
 
     // Takes an id, updates the selection and marks the selected tile
     function updateSelection(id) {
