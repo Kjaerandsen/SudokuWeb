@@ -3,7 +3,7 @@ export function Marking(props) {
     //console.log(props.marks)
     if (props.marks !== undefined && props.marks.length > 0) {
     return (
-    <div className='grid grid-cols-3' style={{fontSize: "0.3rem"}}>
+    <div className='grid grid-cols-3 text-xxs sm:text-xs xl:text-xsm' style={{lineHeight:"1.5"}}>
         {(props.marks.includes(1)) ? <div>1</div> : <div style={{visibility:'hidden'}}>0</div>}
         {(props.marks.includes(2)) ? <div>2</div> : <div style={{visibility:'hidden'}}>0</div>}
         {(props.marks.includes(3)) ? <div>3</div> : <div style={{visibility:'hidden'}}>0</div>}

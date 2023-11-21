@@ -14,7 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className='bg-gray-950'>
+      <body className='bg-slate-800 md:bg-gray-950'>
       <nav className="bg-gray-700 p-3 border-b-4 border-fuchsia-900">
         <div className='flex items-center justify-between container m-auto'>
         <Link href="/">

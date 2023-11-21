@@ -29,7 +29,7 @@ export default function Home() {
             one to nine (1-9) in every straight direction and within each of the nine sub-grids.
           </p><br/>
             {/* Illustrations here */}
-            <Image src={example1} className='m-auto border-black border-2'
+            <Image src={example1} priority={true} className='m-auto border-black border-2 sm:w-8/12 lg:w-6/12 2xl:w-4/12'
               alt="Image of lines of a sudoku grid and a sub-grid with numbers."/>
             <br/>
             <br/>
@@ -39,7 +39,7 @@ export default function Home() {
             Which means that an error has been made. The input of an incorrect number is represented with a red color on the number.
           </p><br/>
             {/* Illustrations here */}
-            <Image src={example2} className='m-auto border-black border-2'
+            <Image src={example2} className='m-auto border-black border-2 sm:w-8/12 lg:w-6/12 2xl:w-4/12'
               alt="Image of lines of a sudoku grid and a sub-grid with invalid number combinations."/>
 
             <br/>
@@ -53,7 +53,7 @@ export default function Home() {
             is the marked tile.
           </p><br/>
             {/* Illustrations here */}
-            <Image src={example3} className='m-auto border-black border-2'
+            <Image src={example3} className='m-auto border-black border-2 sm:w-8/12 lg:w-6/12 2xl:w-4/12'
               alt="Image of a sudoku grid with ones occupied in every line and sub-grid except for one, where the tile is marked."/>
           
             <br/>
@@ -65,7 +65,7 @@ export default function Home() {
             This extends to situations where more values are missing as well, but the complexity increases accordingly.
           </p><br/>
             {/* Illustrations here */}
-            <Image src={example4} className='m-auto border-black border-2'
+            <Image src={example4} className='m-auto border-black border-2 sm:w-8/12 lg:w-6/12 2xl:w-4/12'
               alt="Image of a subgrid with one missing number."/>
             <br/>
             <br/>
@@ -76,7 +76,7 @@ export default function Home() {
             This makes the alternatives for the tiles clear, and through the process of elimination throughout the puzzle, the alternatives 
             for each tile will reduce until there is only one option left. At that point the tile can be filled with the value.
           </p><br/>
-          <Image src={example5} className='m-auto border-black border-2'
+          <Image src={example5} className='m-auto border-black border-2 sm:w-8/12 lg:w-6/12 2xl:w-4/12'
             alt="Image of a sub-grid with markings."/>
             <br/>
             <br/>
