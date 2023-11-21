@@ -3,9 +3,8 @@
 Sudoku web is a web application containing the game Sudoku.
 The current version is a minimum viable product (MVP) containing basic functionality.
 This functionality includes starting a game, updating values using buttons,
-ui elements showing wrong inputs and a victory screen.
-
-
+ui elements showing wrong inputs and a victory screen. Additionally, there are initial instructions on the home page
+and functionality for manually or automatically marking potential occupants of each tile in the board.
 
 
 ## Getting Started
