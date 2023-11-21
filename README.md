@@ -37,6 +37,13 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Sustainability
 
 ### Benchmarks
+One of the goals of this web application is for it to be developed and hosted in a sustainable way. To facilitate this several steps have been taken.
+In design decisions the technology statement found further down on this page goes over some of the decision making behind the choice of technology.
+Further steps have been taken in the design process to be more sustainable. The game uses a dark color scheme to reduce the energy usage, through
+having dimmer light on the page which reduces the power usage of screens displaying the page. Further steps have been taken to reduce the transfer size
+of the webpage. Through using caching strategies, server side rendering where possible and proper image formats to reduce their transfer size.
+Additionally, the section below discusses benchmarks and metrics used to evaluate the application. Further down there are deployment instructions
+to help deploy the application in a sustainable way. 
 
 #### Resources:
 For the resources benchmarking the chrome developer tools were used in the "Network" tab. 
@@ -76,12 +83,12 @@ the user, their hardware and cooling and other background tasks on the system.
 The benchmarks were ran on a computer with a Ryzen R7 3700x CPU.
 
 ### Deployment instructions
-
-## Additional info
-
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+One major factor in the environmental impact of a web application is in the hosting. Choosing a hosting
+provider which uses renewable energy sources reduces the carbon footprint of hosting the application.
+Further steps can also be taken to host the application close to the users to again reduce the carbon footprint.
+As such I urge anyone who wants to host this web application to choose a green provider which uses renewable energy
+and which is as close to the users as possible. This also has the added benefit of being good marketing for the
+product Which can be described to potential users through the about page for example.
 
 ## Technology statement
 The project will use the following technologies:
@@ -117,3 +124,8 @@ All in all, these technologies are a compromise between development cost, and us
 Where common frameworks are used to help in the development, and steps are taken to help
 the user experience. Through TailwindCSS removing unused CSS to reduce file and transfer
 sizes and Next.js allowing for server-side rendering of components.
+
+
+### Additional info
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
