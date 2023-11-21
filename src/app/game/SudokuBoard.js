@@ -5,6 +5,7 @@ import { useRef} from 'react';
 import { useSearchParams } from 'next/navigation';
 import { autoMark, setValue } from './helper'
 import { Marking, Tile } from './components';
+import { zeroSolution, zeroState, puzzles } from './const';
 
 export default function SudokuBoard() {
     const [SelectedId, SetSelectedId] = useState(0);
@@ -156,112 +157,11 @@ export default function SudokuBoard() {
     }
 
     // Data for the board state
-    const [data, setData] = useState([
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-    ]) 
+    const [data, setData] = useState(zeroState) 
 
     // Data for the solved board state
-    const [solvedBoard, setSolvedBoard] = useState([
-        0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0
-    ])
-
-    // Const for the different puzzles available
-    // In the future it might make sense to change this to a stored variable of some sort
-    const puzzles = {
-    "1":{"board":[
-        0,0,0,0,0,3,9,6,8,
-        0,0,4,6,2,0,5,1,0,
-        0,8,7,0,5,0,0,0,2,
-        0,0,0,2,7,0,0,0,9,
-        7,1,0,0,0,0,0,2,4,
-        9,0,0,0,1,5,0,0,0,
-        5,0,0,0,8,0,4,3,0,
-        0,2,3,0,6,9,7,0,0,
-        1,6,8,4,0,0,0,0,0], 
-    "solved":[
-        2,5,1,7,4,3,9,6,8,
-        3,9,4,6,2,8,5,1,7,
-        6,8,7,9,5,1,3,4,2,
-        8,3,6,2,7,4,1,5,9,
-        7,1,5,3,9,6,8,2,4,
-        9,4,2,8,1,5,6,7,3,
-        5,7,9,1,8,2,4,3,6,
-        4,2,3,5,6,9,7,8,1,
-        1,6,8,4,3,7,2,9,5]},
-    1:{"board":[
-        0,0,0,0,0,3,9,6,8,
-        0,0,4,6,2,0,5,1,0,
-        0,8,7,0,5,0,0,0,2,
-        0,0,0,2,7,0,0,0,9,
-        7,1,0,0,0,0,0,2,4,
-        9,0,0,0,1,5,0,0,0,
-        5,0,0,0,8,0,4,3,0,
-        0,2,3,0,6,9,7,0,0,
-        1,6,8,4,0,0,0,0,0], 
-        "solved":[
-        2,5,1,7,4,3,9,6,8,
-        3,9,4,6,2,8,5,1,7,
-        6,8,7,9,5,1,3,4,2,
-        8,3,6,2,7,4,1,5,9,
-        7,1,5,3,9,6,8,2,4,
-        9,4,2,8,1,5,6,7,3,
-        5,7,9,1,8,2,4,3,6,
-        4,2,3,5,6,9,7,8,1,
-        1,6,8,4,3,7,2,9,5]},
-    2:{"board":[
-        0,0,0,0,0,3,9,6,8,
-        0,0,4,6,2,0,5,1,0,
-        0,8,7,0,5,0,0,0,2,
-        0,0,0,2,7,0,0,0,9,
-        7,1,0,0,0,0,0,2,4,
-        9,0,0,0,1,5,0,0,0,
-        5,0,0,0,8,0,4,3,0,
-        0,2,3,0,6,9,7,0,0,
-        1,6,8,4,0,0,0,0,0], 
-    "solved":[
-        2,5,1,7,4,3,9,6,8,
-        3,9,4,6,2,8,5,1,7,
-        6,8,7,9,5,1,3,4,2,
-        8,3,6,2,7,4,1,5,9,
-        7,1,5,3,9,6,8,2,4,
-        9,4,2,8,1,5,6,7,3,
-        5,7,9,1,8,2,4,3,6,
-        4,2,3,5,6,9,7,8,1,
-        1,6,8,4,3,7,2,9,5]}}
+    const [solvedBoard, setSolvedBoard] = useState(zeroSolution)
+    
 
     // Displays a single row of the sudoku board
     function SudokuRow(props) {
