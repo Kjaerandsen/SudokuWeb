@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useRef} from 'react';
 import { useSearchParams } from 'next/navigation';
-import { autoMark, validateBoard } from './helper'
+import { autoMark, setValue } from './helper'
+import { Marking, Tile } from './components';
 
 export default function SudokuBoard() {
     const [SelectedId, SetSelectedId] = useState(0);
@@ -17,40 +18,40 @@ export default function SudokuBoard() {
     const handleKeyboardInput = (event) => {
         switch (event.key) {
             case "1":
-                setValue(1)
+                setValueHelper(1)
             break
             case "2":
-                setValue(2)
+                setValueHelper(2)
             break
             case "3":
-                setValue(3)
+                setValueHelper(3)
             break
             case "4":
-                setValue(4)
+                setValueHelper(4)
             break
             case "5":
-                setValue(5)
+                setValueHelper(5)
             break
             case "6":
-                setValue(6)
+                setValueHelper(6)
             break
             case "7":
-                setValue(7)
+                setValueHelper(7)
             break
             case "8":
-                setValue(8)
+                setValueHelper(8)
             break
             case "9":
-                setValue(9)
+                setValueHelper(9)
             break
             case "0":
-                setValue(0)
+                setValueHelper(0)
             break
             case "Backspace":
-                setValue(0)
+                setValueHelper(0)
             break
             case "Delete":
-                setValue(0)
+                setValueHelper(0)
             break
             case "-":
                 ToggleMarkMode(!MarkMode)
@@ -97,7 +98,7 @@ export default function SudokuBoard() {
         document.removeEventListener('keydown', handleKeyboardInput);
       }
     }, [handleKeyboardInput]);
-    
+
 
     // Takes an id, updates the selection and marks the selected tile
     function updateSelection(id) {
@@ -134,157 +135,55 @@ export default function SudokuBoard() {
 
     // Function sets the value of a tile in the game
     // Takes a value to update the selected tile to
-    function setValue(value) {
+    function setValueHelper(value) {
         // Get the board state
         let board = data
 
-        // Validate the value (10 > x > 0)
-        if (value >= 1 && value < 10) {
-        console.log("setting value: ", value)
-        // Check if a tile is selected and valid (81 > x >= 0)
-        if (SelectedId >= 0 && SelectedId < 81) {
-        // Add value if markmode is false
-        if (!MarkMode) {
-            // Update the value
-            board[SelectedId].val = value
-            board[SelectedId].isMarked = true
-            delete board[SelectedId].markings
-            // Validate and update isValid
-            board = validateBoard(board, solvedBoard)
-
-        // Set marking if markmode is true
-        } else {
-            console.log("Marking")
-            // Do not add a marking if the tile is already occupied
-            if (board[SelectedId].val == 0) {
-                // Marks variable
-                var Marks = []
-                // If markings for the tile exists get them
-                if (("markings" in board[SelectedId])) {
-                    //console.log(board[SelectedId])
-                    Marks = board[SelectedId].markings
-                    // Get the marking values if there are any
-                    console.log("Found markings: ", Marks)
-                    // Check if the value already exists
-                    let loc = Marks.indexOf(value)
-                    if (loc >= 0){
-                        // Remove the value if it is present
-                        console.log("Deleting: ", value)
-                        Marks.splice(loc, 1)
-                    } else {
-                        Marks.push(value) // Add the value if not
-                        console.log("Adding marks to existing", Marks, value)
-                    }
-                } else { // If no markings exist, add the value
-                    Marks.push(value)
-                    console.log("Adding marks", Marks, value)
-                }
-                console.log("Marks are now:", Marks)
-                //Marks = Marks.sort((a, b) => a - b)
-                board[SelectedId].markings=Marks
-            }
-        }}
-
-        // Remove the markings and value if the input is 0
-        } else {
-            // Set the value to true if removing the value to remove the red background marking
-            if (value == 0){
-                board[SelectedId].val = value
-                board[SelectedId].isValid = true
-                delete board[SelectedId].markings
-            }
-        }
+        board = setValue(data, SelectedId, value, MarkMode, solvedBoard)
 
         // Set the board state
         setData([...board])
     }
 
     // Function which automatically marks the possibilites for each tile in the grid
-function AutoMarkHelper(){
-    // Get the board state
-    let board = data
-    
-    board = autoMark(board)
-    // Update the board to show the markings
-    setData([...board])
-}
-
-
-    /*
-        id, is automatic, not important
-        value is important
-        isSelected is important
-        Need to be able to mark all interacting tiles, both in the case of them as impacting (blue?)
-        and in the case of invalid marking (red?)
-        The invalid tile should have another text color or border to show which value is incorrectly marked
-    */
-
-    // Displays a single row of the sudoku board
-    function SudokuRow(props) {
-        return (
-            <tr>
-                {props.items.map((data, x) => (
-                    <td className="align-items-center justify-content-center w-7 h-7 border border-gray-400" style={!data.isValid && data.isMarked && data.isSelected ? {backgroundColor: 'rgb(112,53,49)'} : data.isSelected ? {backgroundColor: 'purple'} : 
-                    {}} 
-                    id={x + props.indexStart} key={x} onClick={() => updateSelection(x+props.indexStart)}>
-                        {data.val == 0 ? <Marking marks = {data.markings}/> : <Tile data={data}/>}
-                    </td>
-                ))}
-            </tr>
-        )
-    }
-
-    // Example way of showing markings for each tile
-    function Marking(props) {
-        //console.log(props.marks)
-        if (props.marks !== undefined && props.marks.length > 0) {
-        return (
-        <div className='grid grid-cols-3' style={{fontSize: "0.3rem"}}>
-            {(props.marks.includes(1)) ? <div>1</div> : <div style={{visibility:'hidden'}}>0</div>}
-            {(props.marks.includes(2)) ? <div>2</div> : <div style={{visibility:'hidden'}}>0</div>}
-            {(props.marks.includes(3)) ? <div>3</div> : <div style={{visibility:'hidden'}}>0</div>}
-            {(props.marks.includes(4)) ? <div>4</div> : <div style={{visibility:'hidden'}}>0</div>}
-            {(props.marks.includes(5)) ? <div>5</div> : <div style={{visibility:'hidden'}}>0</div>}
-            {(props.marks.includes(6)) ? <div>6</div> : <div style={{visibility:'hidden'}}>0</div>}
-            {(props.marks.includes(7)) ? <div>7</div> : <div style={{visibility:'hidden'}}>0</div>}
-            {(props.marks.includes(8)) ? <div>8</div> : <div style={{visibility:'hidden'}}>0</div>}
-            {(props.marks.includes(9)) ? <div>9</div> : <div style={{visibility:'hidden'}}>0</div>}
-        </div>
-        )
-        } else {
-            return(<></>)
-        }
-    }
-
-    // Show a tile without markings
-    function Tile(props) {
-        return (
-            <div className={props.data.isValid ? "align-items-center justify-content-center text-bold text-gray-300" : "text-red-800 text-bold align-items-center justify-content-center"}>
-                {props.data.val}
-            </div>
-        )
+    function AutoMarkHelper(){
+        // Get the board state
+        let board = data
+        
+        board = autoMark(board)
+        // Update the board to show the markings
+        setData([...board])
     }
 
     // Data for the board state
     const [data, setData] = useState([
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
-        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
+        {"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},{"val":0,"isValid":true,"isMarked":false},
     ]) 
 
     // Data for the solved board state
@@ -300,7 +199,10 @@ function AutoMarkHelper(){
         0,0,0,0,0,0,0,0,0
     ])
 
-    const puzzles = {"1":{"board":[
+    // Const for the different puzzles available
+    // In the future it might make sense to change this to a stored variable of some sort
+    const puzzles = {
+    "1":{"board":[
         0,0,0,0,0,3,9,6,8,
         0,0,4,6,2,0,5,1,0,
         0,8,7,0,5,0,0,0,2,
@@ -309,8 +211,8 @@ function AutoMarkHelper(){
         9,0,0,0,1,5,0,0,0,
         5,0,0,0,8,0,4,3,0,
         0,2,3,0,6,9,7,0,0,
-        1,6,8,4,0,0,0,0,0
-    ], "solved":[
+        1,6,8,4,0,0,0,0,0], 
+    "solved":[
         2,5,1,7,4,3,9,6,8,
         3,9,4,6,2,8,5,1,7,
         6,8,7,9,5,1,3,4,2,
@@ -319,8 +221,7 @@ function AutoMarkHelper(){
         9,4,2,8,1,5,6,7,3,
         5,7,9,1,8,2,4,3,6,
         4,2,3,5,6,9,7,8,1,
-        1,6,8,4,3,7,2,9,5
-    ]},
+        1,6,8,4,3,7,2,9,5]},
     1:{"board":[
         0,0,0,0,0,3,9,6,8,
         0,0,4,6,2,0,5,1,0,
@@ -330,8 +231,8 @@ function AutoMarkHelper(){
         9,0,0,0,1,5,0,0,0,
         5,0,0,0,8,0,4,3,0,
         0,2,3,0,6,9,7,0,0,
-        1,6,8,4,0,0,0,0,0
-    ], "solved":[
+        1,6,8,4,0,0,0,0,0], 
+        "solved":[
         2,5,1,7,4,3,9,6,8,
         3,9,4,6,2,8,5,1,7,
         6,8,7,9,5,1,3,4,2,
@@ -340,8 +241,7 @@ function AutoMarkHelper(){
         9,4,2,8,1,5,6,7,3,
         5,7,9,1,8,2,4,3,6,
         4,2,3,5,6,9,7,8,1,
-        1,6,8,4,3,7,2,9,5
-    ]},
+        1,6,8,4,3,7,2,9,5]},
     2:{"board":[
         0,0,0,0,0,3,9,6,8,
         0,0,4,6,2,0,5,1,0,
@@ -351,8 +251,8 @@ function AutoMarkHelper(){
         9,0,0,0,1,5,0,0,0,
         5,0,0,0,8,0,4,3,0,
         0,2,3,0,6,9,7,0,0,
-        1,6,8,4,0,0,0,0,0
-    ], "solved":[
+        1,6,8,4,0,0,0,0,0], 
+    "solved":[
         2,5,1,7,4,3,9,6,8,
         3,9,4,6,2,8,5,1,7,
         6,8,7,9,5,1,3,4,2,
@@ -361,8 +261,21 @@ function AutoMarkHelper(){
         9,4,2,8,1,5,6,7,3,
         5,7,9,1,8,2,4,3,6,
         4,2,3,5,6,9,7,8,1,
-        1,6,8,4,3,7,2,9,5
-    ]}
+        1,6,8,4,3,7,2,9,5]}}
+
+    // Displays a single row of the sudoku board
+    function SudokuRow(props) {
+        return (
+            <tr>
+                {props.items.map((data, x) => (
+                    <td className="align-items-center justify-content-center w-7 h-7 border border-gray-400" style={!data.isValid && data.isMarked && data.isSelected ? { backgroundColor: 'rgb(112,53,49)' } : data.isSelected ? { backgroundColor: 'purple' } :
+                        {}}
+                        id={x + props.indexStart} key={x} onClick={() => updateSelection(x + props.indexStart)}>
+                        {data.val == 0 ? <Marking marks={data.markings} /> : <Tile data={data} />}
+                    </td>
+                ))}
+            </tr>
+        )
     }
 
     return (
@@ -390,19 +303,19 @@ function AutoMarkHelper(){
 
             <div className="m-auto">
                 <div className='grid grid-cols-3 m-auto bg-sky-950 rounded-md w-36'>
-                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-r border-b border-gray-300" onClick={() => setValue(1)}>1</button>
-                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-x border-b border-gray-300" onClick={() => setValue(2)}>2</button>
-                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-l border-b border-gray-300" onClick={() => setValue(3)}>3</button>
-                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-y border-r border-gray-300" onClick={() => setValue(4)}>4</button>
-                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border border-gray-300" onClick={() => setValue(5)}>5</button>
-                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-y border-l border-gray-300" onClick={() => setValue(6)}>6</button>
-                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-r border-t border-gray-300" onClick={() => setValue(7)}>7</button>
-                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-t border-x border-gray-300" onClick={() => setValue(8)}>8</button>
-                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-l border-t border-gray-300" onClick={() => setValue(9)}>9</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-r border-b border-gray-300" onClick={() => setValueHelper(1)}>1</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-x border-b border-gray-300" onClick={() => setValueHelper(2)}>2</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-l border-b border-gray-300" onClick={() => setValueHelper(3)}>3</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-y border-r border-gray-300" onClick={() => setValueHelper(4)}>4</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border border-gray-300" onClick={() => setValueHelper(5)}>5</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-y border-l border-gray-300" onClick={() => setValueHelper(6)}>6</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-r border-t border-gray-300" onClick={() => setValueHelper(7)}>7</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-t border-x border-gray-300" onClick={() => setValueHelper(8)}>8</button>
+                    <button type="button" className="text-gray-300 pl-2 pr-2 m-auto h-12 w-12 border-l border-t border-gray-300" onClick={() => setValueHelper(9)}>9</button>
                 </div>
             </div>
 
-            <button type="button" className="bg-sky-950 text-gray-300 pl-2 pr-2 m-2 rounded-md w-56" onClick={() => setValue(0)}> 
+            <button type="button" className="bg-sky-950 text-gray-300 pl-2 pr-2 m-2 rounded-md w-56" onClick={() => setValueHelper(0)}> 
             Clear tile
             </button>
 
