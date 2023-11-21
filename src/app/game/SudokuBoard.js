@@ -168,7 +168,8 @@ export default function SudokuBoard() {
         return (
             <tr>
                 {props.items.map((data, x) => (
-                    <td className="align-items-center justify-content-center w-7 h-7 border border-gray-400" style={!data.isValid && data.isMarked && data.isSelected ? { backgroundColor: 'rgb(112,53,49)' } : data.isSelected ? { backgroundColor: 'purple' } :
+                    <td className="align-items-center justify-content-center w-7 h-7 border border-gray-400 xs:w-9 xs:h-9 xs:text-xl xl:w-12 xl:h-12 xl:text-2xl" 
+                    style={!data.isValid && data.isMarked && data.isSelected ? { backgroundColor: 'rgb(127,95,127)' } : data.isSelected ? { backgroundColor: 'purple' } :
                         {}}
                         id={x + props.indexStart} key={x} onClick={() => updateSelection(x + props.indexStart)}>
                         {data.val == 0 ? <Marking marks={data.markings} /> : <Tile data={data} />}
