@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useRef} from 'react';
 import { useSearchParams } from 'next/navigation';
+import { autoMark, validateBoard } from './helper'
 
 export default function SudokuBoard() {
     const [SelectedId, SetSelectedId] = useState(0);
@@ -96,9 +97,6 @@ export default function SudokuBoard() {
         document.removeEventListener('keydown', handleKeyboardInput);
       }
     }, [handleKeyboardInput]);
-
-    
-    
     
 
     // Takes an id, updates the selection and marks the selected tile
@@ -152,7 +150,7 @@ export default function SudokuBoard() {
             board[SelectedId].isMarked = true
             delete board[SelectedId].markings
             // Validate and update isValid
-            board = validateBoard(board)
+            board = validateBoard(board, solvedBoard)
 
         // Set marking if markmode is true
         } else {
@@ -201,167 +199,16 @@ export default function SudokuBoard() {
         setData([...board])
     }
 
-    // Takes a board, each value validates against the solution
-    function validateBoard(board) {
-        let solution = solvedBoard
-        let correct = 0
-        // Go through each value
-        for (let i = 0; i < 81; i++) {
-            // If the value is equal to the solution value
-            //console.log(board[i].val, solution[i])
-            if (board[i].val == solution[i]) {
-                // Set the tile to valid
-                board[i].isValid = true
-                correct++
-            } else {
-                // Else set the tile to invalid
-                board[i].isValid = false
-            }
-        }
-
-        console.log(board)
-
-        if (correct == 81){
-            window.alert("Congratulations, you solved the puzzle!")
-        }
-
-        return board
-    }
-
     // Function which automatically marks the possibilites for each tile in the grid
-    function AutoMark(){
-        // Get the board state
-        let board = data
-        let rows = []
-        let cols = []
-        let grids = []
-
-        // Get arrays of the lines and grids
-
-        // Get the rows
-        // Goes through the array dividing it into a 9x9 array per row
-        for (let i = 0; i < 9; i++){
-            rows.push([])
-            for (let j = 0; j < 9; j++){
-                rows[i][j] = ({"val":board[i*9+j].val, "id":i*9+j})
-            }
-        }
-
-        // Get the columns
-        // Goes through the array dividing it into a 9x9 array per column
-        for (let i = 0; i < 9; i++){
-            cols.push([])
-            for (let j = 0; j < 9; j++){
-                cols[i][j] = ({"val":board[j*9+i].val, "id":j*9+i})
-            }
-        }
-
-        // Get the grids
-        // Goes through the array dividing it into a 9x9 array per grid
-        // With four counters: 
-        // i is the row offset (27*i)
-        // l is the column offset (3*i)
-        // j is the grid row offset (9*j)
-        // k is the grid column offset (3*k)
-        for (let i = 0; i < 3; i++){
-            for (let l = 0; l < 3; l++){
-                grids.push([])
-                for (let j = 0; j < 3; j++){
-                    for (let k = 0; k < 3; k++){
-                        grids[i*3+l][j*3+k] = ({"val":board[i*27+l*3+j*9+k].val, "id":i*27+l*3+j*9+k})
-                    }
-                }
-            }
-        }
-
-        let marked = new Map()
-        // Go through each item, generate markings
-        for (let i = 0; i < 9; i++){
-            rows[i] = generateMarkings(rows[i])
-            cols[i] = generateMarkings(cols[i])
-            grids[i] = generateMarkings(grids[i])
-
-            // This section fills the marked map with the generated markings
-            // If markings already exist in the map then the values are cross-referenced
-            // keeping only values which are common accross the three arrays
-
-            // Go through the arrays and combine the markings
-            for (let j = 0; j < 9; j++){
-                // Set the markings if the value is not 0
-                if (marked.has(rows[i][j].id)){
-                    let oldMarks = marked.get(rows[i][j].id)
-                    // Update the markings with the possibilities present in both
-                    // If a marking is not present in one, it is not a possibility
-                    marked.set(rows[i][j].id, oldMarks.filter(item => rows[i][j].markings.includes(item)))
-                } else {
-                    // If not add the markings
-                    if (rows[i][j].val == 0) {
-                        marked.set(rows[i][j].id, rows[i][j].markings)
-                    }
-                }
-
-                // Set the markings for the columns
-                if (marked.has(cols[i][j].id)){
-                    let oldMarks = marked.get(cols[i][j].id)
-                    // Update the markings with the possibilities present in both
-                    // If a marking is not present in one, it is not a possibility
-                    marked.set(cols[i][j].id, oldMarks.filter(item => cols[i][j].markings.includes(item)))
-                } else {
-                    // If not add the markings
-                    if (cols[i][j].val == 0) {
-                        marked.set(cols[i][j].id, cols[i][j].markings)
-                    }
-                }
-
-                // Set the markings for the grids
-                if (marked.has(grids[i][j].id)){
-                    let oldMarks = marked.get(grids[i][j].id)
-                    // Update the markings with the possibilities present in both
-                    // If a marking is not present in one, it is not a possibility
-                    marked.set(grids[i][j].id, oldMarks.filter(item => grids[i][j].markings.includes(item)))
-                } else {
-                    // If not add the markings
-                    if (grids[i][j].val == 0) {
-                        marked.set(grids[i][j].id, grids[i][j].markings)
-                    }
-                }
-            }
-        }
-
-        // Combine the result with the board
-        for (let i = 0; i < 81; i++){
-            if (marked.get(i) != undefined) {
-                board[i].markings = marked.get(i);
-            }
-        }
-
-        // Update the board to show the markings
-        setData([...board])
-    }
-
-    // Takes a list of values and returns markings based on what is occupied
-    function generateMarkings(items){
-        let occupied = []
-        let possible = [1,2,3,4,5,6,7,8,9]
-
-        for (let i = 0; i < 9; i++) {
-            if (items[i].val != 0){
-                occupied.push(items[i].val)
-            }
-        }
-
-        // Creates a markings array which only keeps values in possible which are not occupied
-        let markings = possible.filter(item => !occupied.includes(item))
-
-        for (let i = 0; i < 9; i++) {
-            if (items[i].val == 0){
-                items[i].markings = markings
-            }
-        }
-
-        return items
-    }
+function AutoMarkHelper(){
+    // Get the board state
+    let board = data
     
+    board = autoMark(board)
+    // Update the board to show the markings
+    setData([...board])
+}
+
 
     /*
         id, is automatic, not important
@@ -567,7 +414,7 @@ export default function SudokuBoard() {
             </label>
             
             <br/>
-            <button type="button" className="bg-sky-950 text-gray-300 pl-2 pr-2 m-2 rounded-md w-56" onClick={() => AutoMark()}> 
+            <button type="button" className="bg-sky-950 text-gray-300 pl-2 pr-2 m-2 rounded-md w-56" onClick={() => AutoMarkHelper()}> 
             Automatically mark
             </button>
         </div>
