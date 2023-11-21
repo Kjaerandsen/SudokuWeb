@@ -11,79 +11,79 @@ export default function SudokuBoard() {
     const [SelectedId, SetSelectedId] = useState(0);
     const initialLoad = useRef(true);
     const [MarkMode, ToggleMarkMode] = useState(false);
-    const searchParams = useSearchParams()
-    const [PuzzleId, SetPuzzleId] = useState(1) 
+    const searchParams = useSearchParams();
+    const [PuzzleId, SetPuzzleId] = useState(1);
 
     // Based on https://devtrium.com/posts/how-keyboard-shortcut visited 20.11.2023
     // Handle keybindings
     const handleKeyboardInput = (event) => {
         switch (event.key) {
             case "1":
-                setValueHelper(1)
-            break
+                setValueHelper(1);
+            break;
             case "2":
-                setValueHelper(2)
-            break
+                setValueHelper(2);
+            break;
             case "3":
-                setValueHelper(3)
-            break
+                setValueHelper(3);
+            break;
             case "4":
-                setValueHelper(4)
-            break
+                setValueHelper(4);
+            break;
             case "5":
-                setValueHelper(5)
-            break
+                setValueHelper(5);
+            break;
             case "6":
-                setValueHelper(6)
-            break
+                setValueHelper(6);
+            break;
             case "7":
-                setValueHelper(7)
-            break
+                setValueHelper(7);
+            break;
             case "8":
-                setValueHelper(8)
-            break
+                setValueHelper(8);
+            break;
             case "9":
-                setValueHelper(9)
-            break
+                setValueHelper(9);
+            break;
             case "0":
-                setValueHelper(0)
-            break
+                setValueHelper(0);
+            break;
             case "Backspace":
-                setValueHelper(0)
-            break
+                setValueHelper(0);
+            break;
             case "Delete":
-                setValueHelper(0)
-            break
+                setValueHelper(0);
+            break;
             case "-":
-                ToggleMarkMode(!MarkMode)
-            break
+                ToggleMarkMode(!MarkMode);
+            break;
             case "+":
-                ToggleMarkMode(!MarkMode)
-            break
+                ToggleMarkMode(!MarkMode);
+            break;
         }
     }
 
     useEffect(() => {
       if (initialLoad.current) {
         
-        let val = searchParams.get('puzzle')
+        let val = searchParams.get('puzzle');
         // Set the board state
         if(puzzles[val]) {
             //console.log(puzzles[val])
-            console.log("Puzzle found, setting state.")
+            console.log("Puzzle found, setting state.");
             //console.log(tempData)
             // Set the board state and solved board state variables
-            setStartingPosition(puzzles[val]["board"],0)
-            setSolvedBoard(puzzles[val]["solved"])
-            SetPuzzleId(val)
+            setStartingPosition(puzzles[val]["board"],0);
+            setSolvedBoard(puzzles[val]["solved"]);
+            SetPuzzleId(val);
         } else {
             // If the puzzle is not found, default to the first puzzle
-            val = 1
-            console.log("Puzzle found, setting state.")
+            val = 1;
+            console.log("Puzzle found, setting state.");
             //console.log(tempData)
             // Set the board state and solved board state variables
-            setStartingPosition(puzzles[val]["board"],0)
-            setSolvedBoard(puzzles[val]["solved"])
+            setStartingPosition(puzzles[val]["board"],0);
+            setSolvedBoard(puzzles[val]["solved"]);
         }
         // Set up the board
         initialLoad.current = false;
@@ -92,7 +92,7 @@ export default function SudokuBoard() {
     
       // Based on https://devtrium.com/posts/how-keyboard-shortcut visited 20.11.2023
       // Listen for keyboard input, call the function above when an input is detected
-      document.addEventListener('keydown', handleKeyboardInput)
+      document.addEventListener('keydown', handleKeyboardInput);
 
       // Remove the event listener when it is no longer needed
       return () => {
@@ -103,34 +103,34 @@ export default function SudokuBoard() {
 
     // Takes an id, updates the selection and marks the selected tile
     function updateSelection(id) {
-        console.log("Updating id to: ", id)
+        //console.log("Updating id to: ", id);
         // Get the previous selection
-        let prev = SelectedId
+        let prev = SelectedId;
         // Remove the selection from the board
-        let board = data
-        board[prev].isSelected = false
+        let board = data;
+        board[prev].isSelected = false;
         // Update the new selection
-        board[id].isSelected = true
+        board[id].isSelected = true;
         // Set the values
-        SetSelectedId(id)
-        setData([...board])
+        SetSelectedId(id);
+        setData([...board]);
     }
 
     // Sets up a new board with values from a values integer array
     function setStartingPosition(values, id) {
         if (id == 0) {
-            let boardData = []
+            let boardData = [];
             values.forEach(value => {
-                boardData.push({"val":value,"isSelected":false,"isValid":true})
+                boardData.push({"val":value,"isSelected":false,"isValid":true});
             })
             setData(boardData)
         } else {
-            values = puzzles[id]["board"]
-            let boardData = []
+            values = puzzles[id]["board"];
+            let boardData = [];
             values.forEach(value => {
-            boardData.push({"val":value,"isSelected":false,"isValid":true})
+            boardData.push({"val":value,"isSelected":false,"isValid":true});
             })
-            setData(boardData)
+            setData(boardData);
         }
     }
 
@@ -138,29 +138,29 @@ export default function SudokuBoard() {
     // Takes a value to update the selected tile to
     function setValueHelper(value) {
         // Get the board state
-        let board = data
+        let board = data;
 
-        board = setValue(data, SelectedId, value, MarkMode, solvedBoard)
+        board = setValue(data, SelectedId, value, MarkMode, solvedBoard);
 
         // Set the board state
-        setData([...board])
+        setData([...board]);
     }
 
     // Function which automatically marks the possibilites for each tile in the grid
     function AutoMarkHelper(){
         // Get the board state
-        let board = data
+        let board = data;
         
-        board = autoMark(board)
+        board = autoMark(board);
         // Update the board to show the markings
-        setData([...board])
+        setData([...board]);
     }
 
     // Data for the board state
-    const [data, setData] = useState(zeroState) 
+    const [data, setData] = useState(zeroState);
 
     // Data for the solved board state
-    const [solvedBoard, setSolvedBoard] = useState(zeroSolution)
+    const [solvedBoard, setSolvedBoard] = useState(zeroSolution);
     
 
     // Displays a single row of the sudoku board
