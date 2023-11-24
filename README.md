@@ -5,6 +5,8 @@ The current version is a minimum viable product (MVP) containing basic functiona
 This functionality includes starting a game, updating values using buttons,
 ui elements showing wrong inputs and a victory screen. Additionally, there are initial instructions on the home page
 and functionality for manually or automatically marking potential occupants of each tile in the board.
+The application has PWA functionality, which allows users to add the webpage to their homescreen on mobile devices,
+and gives a more tailored experience with caching and a fullscreen experience.
 
 
 ## Getting Started
@@ -51,15 +53,21 @@ of requests. All the tests were ran using the disable cache function to force al
 different pages to be loaded
 
 Home page:
-182kB transferred, 447kB resources and 21 requests.
+552KB transferred, 1,4MB resources and 50 requests.
 
 Game page:
-144kB transferred, 406kB resources and 13 requests.
+529KB transferred, 1,3MB resources and 45 requests.
 
 This transfer size is lower than the target of 1.5 megabytes per page. It is also worthy to note that
 the transfer for each page includes prefetching of available routes. Meaning that the home page also
-transfers data for the game page, which if the cache is not disabled would reduce the transfer size
-of the game page on load. Additionally, further page loads have a reduced size due to caching.
+transfers data for the game page, which if the cache is not disabled would drastically reduce the transfer size
+of the game page on load, in real world the overlap is substantial in the files. 
+Additionally, further page loads have a reduced size due to caching.
+Another thing to note is that most of the data transferred is due to the PWA implementation.
+Which comes with the upside of additional features and the ability to add the application to the homescreen,
+but this comes with the cost of interfering with the lazy image loading. It is also worth noting that
+a lot of the transferred files are transfered after the page has loaded and therefore they do not interfere
+with the page load times as much.
 
 #### Performance
 To test the performance of the app a metric of time to largest contentful paint (LCP) metric was used.
@@ -68,11 +76,11 @@ simulated throttling enabled. Specifically the throttling was set to 4x cpu and 
 This simulates a four times slower cpu and networking conditions of a slow 4g network. 
 This is done to evaluate how the page would perform for users with slower hardware.
 
-For the home page this gave a LCP time of 1.7 seconds and the game page had a LCP of 2.1 seconds.
+For the home page this gave a LCP time of 1.8 seconds and the game page had a LCP of 2.8 seconds.
 Both hitting the target of less than 3.5 seconds.
 
-In testing with the "Performance" tab instead with 6x CPU slowdown and Slow3G networking enabled the
-FCP was 2.41 seconds on the home page and 2.49 seconds on the game page.
+In testing with the "Performance" tab instead with 6x CPU slowdown and Fast3G networking enabled the
+LCP was 1.39 seconds on the home page and 2.68 seconds on the game page.
 Again both pages hit the target of a sub 3.5 second load time.
 
 It is worth noting that this metric might be inacurrate and real world conditions can have an impact
@@ -90,7 +98,7 @@ and which is as close to the users as possible. This also has the added benefit 
 product Which can be described to potential users through the about page for example.
 
 ## Technology statement
-The project will use the following technologies:
+This project uses the following technologies:
 * Node.js
 * JavaScript
 * HTML
