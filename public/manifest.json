@@ -1,0 +1,33 @@
+{
+    "theme_color": "#703061",
+    "background_color": "#1e293b",
+    "display": "fullscreen",
+    "scope": "/",
+    "start_url": "/",
+    "name": "Sudoku Web",
+    "short_name": "SudokuWeb",
+    "description": "Sudoku game",
+    "icons": [
+		{
+            "src": "/icon-512x512maskable.jpg",
+            "sizes": "512x512",
+            "type": "image/jpeg",
+			"purpose": "any maskable"
+        },
+        {
+            "src": "/icon-192x192.jpg",
+            "sizes": "192x192",
+            "type": "image/jpeg"
+        },
+        {
+            "src": "/icon-256x256.jpg",
+            "sizes": "256x256",
+            "type": "image/jpeg"
+        },
+        {
+            "src": "/icon-512x512.jpg",
+            "sizes": "512x512",
+            "type": "image/jpeg"
+        }
+    ]
+}
