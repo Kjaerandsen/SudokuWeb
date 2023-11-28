@@ -78,6 +78,7 @@ This is done to evaluate how the page would perform for users with slower hardwa
 
 For the home page this gave a LCP time of 1.8 seconds and the game page had a LCP of 2.8 seconds.
 Both hitting the target of less than 3.5 seconds.
+Additionally the FCP were 0.8 and 1.1 seconds respectively.
 
 In testing with the "Performance" tab instead with 6x CPU slowdown and Fast3G networking enabled the
 LCP was 1.39 seconds on the home page and 2.68 seconds on the game page.
@@ -91,11 +92,11 @@ The benchmarks were ran on a computer with a Ryzen R7 3700x CPU.
 
 ### Deployment instructions
 One major factor in the environmental impact of a web application is in the hosting. Choosing a hosting
-provider which uses renewable energy sources reduces the carbon footprint of hosting the application.
-Further steps can also be taken to host the application close to the users to again reduce the carbon footprint.
+provider which uses renewable energy sources reduces the carbon footprint of hosting the application. If the provider does not use renewable energy sources themselves you can still find a provider which finances the expansion of renewable energy sources, or renewable energy in other regions, or a provider which does something else to offset their carbon offset.
+Further steps can also be taken to host the application close to the users to again reduce the carbon footprint. For a smaller audience this can be simply hosting the application close to that audience, while for a global audience this might require setting up servers in several locations or using a content delivery network with servers in several locations close to potential users.
 As such I urge anyone who wants to host this web application to choose a green provider which uses renewable energy
 and which is as close to the users as possible. This also has the added benefit of being good marketing for the
-product Which can be described to potential users through the about page for example.
+product. Which can be described to potential users through the about page for example.
 
 ## Technology statement
 This project uses the following technologies:
