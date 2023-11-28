@@ -53,10 +53,10 @@ of requests. All the tests were ran using the disable cache function to force al
 different pages to be loaded
 
 Home page:
-552KB transferred, 1,4MB resources and 50 requests.
+546KB transferred, 1,4MB resources and 49 requests.
 
 Game page:
-529KB transferred, 1,3MB resources and 45 requests.
+529KB transferred, 1,3MB resources and 43 requests.
 
 This transfer size is lower than the target of 1.5 megabytes per page. It is also worthy to note that
 the transfer for each page includes prefetching of available routes. Meaning that the home page also
