@@ -56,7 +56,7 @@ Home page:
 546KB transferred, 1,4MB resources and 49 requests.
 
 Game page:
-529KB transferred, 1,3MB resources and 43 requests.
+529KB transferred, 1,3MB resources and 44 requests.
 
 This transfer size is lower than the target of 1.5 megabytes per page. It is also worthy to note that
 the transfer for each page includes prefetching of available routes. Meaning that the home page also
